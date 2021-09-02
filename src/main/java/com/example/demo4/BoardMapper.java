@@ -2,7 +2,6 @@ package com.example.demo4;
 
 import org.apache.ibatis.annotations.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -17,8 +16,8 @@ public interface BoardMapper {
     @Update("UPDATE BOARD SET BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content} WHERE BOARD_NO = #{board_no}")
     int updateBoard(BoardDto boardDto);
 
-    @Select("SELECT * FROM BOARD ORDER BY BOARD_NO DESC")
-    List<BoardDto> selectAll();
+    @Select("SELECT COUNT(*) FROM BOARD")
+    int countPosts();
 
     @Select("SELECT * FROM BOARD WHERE BOARD_NO = #{board_no}")
     BoardDto selectByNo(int board_no);

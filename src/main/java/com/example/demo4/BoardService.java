@@ -24,8 +24,8 @@ public class BoardService{
         return boardMapper.updateBoard(boardDto);
     }
 
-    public List<BoardDto> selectAll() {
-        return boardMapper.selectAll();
+    public int countPosts() {
+        return boardMapper.countPosts();
     }
 
     public BoardDto selectByNo(int board_no) {

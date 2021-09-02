@@ -10,32 +10,32 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @RequestMapping(value = "main")
+    @GetMapping(value = "main")
     public String main() {
         return "redirect:list?no=0";
     }
 
-    @RequestMapping(value = "list")
+    @GetMapping(value = "list")
     public String list(Model model, @RequestParam("no") int page_no) {
         Pagination pagination = new Pagination(page_no);
 
         model.addAttribute("no", page_no);
         model.addAttribute("block_no", pagination.block_no());
-        model.addAttribute(Constant.TOTAL_PAGES_NO, pagination.total_pages_no(boardService));
+        model.addAttribute(Constant.TOTAL_PAGES_NO, pagination.total_pages_no(boardService.countPosts()));
         model.addAttribute("boardList", boardService.selectForPaging(pagination.startEndNo()));
         model.addAttribute("page_count_per_block", Constant.PAGE_COUNT_PER_BLOCK);
 
         return "list";
     }
 
-    @RequestMapping(value = "detail")
+    @GetMapping(value = "detail")
     public String detail(Model model, @RequestParam("no") int board_no, @RequestParam("page_no") int page_no ) {
         model.addAttribute("boardDetail", boardService.selectByNo(board_no));
         model.addAttribute("page_no", page_no);
         return "detail";
     }
 
-    @RequestMapping(value = "write_form")
+    @GetMapping(value = "write_form")
     public String write_form() {
         return "write_form";
     }
@@ -51,7 +51,7 @@ public class BoardController {
         return "redirect:list?no=0";
     }
 
-    @RequestMapping(value = "edit_form")
+    @GetMapping(value = "edit_form")
     public String edit_form(@RequestParam("no") int board_no, @RequestParam("page_no") int page_no,  Model model) {
         model.addAttribute("boardDetail", boardService.selectByNo(board_no));
         model.addAttribute("page_no", page_no);

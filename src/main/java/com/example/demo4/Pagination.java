@@ -19,15 +19,14 @@ public class Pagination {
     public StartEndNo startEndNo () {
         int startNo = current_page_no * Constant.ARTICLE_COUNT_PER_PAGE + 1;
         int endNo = (current_page_no + 1) * Constant.ARTICLE_COUNT_PER_PAGE;
-        StartEndNo startEndNo = new StartEndNo(startNo, endNo);
-        return startEndNo;
+        return new StartEndNo(startNo, endNo);
     }
 
-    public int total_pages_no (BoardService boardService) {
-        if (boardService.selectAll().size()%Constant.ARTICLE_COUNT_PER_PAGE == 0) {
-            return boardService.selectAll().size()/Constant.ARTICLE_COUNT_PER_PAGE;
+    public int total_pages_no (int count_posts) {
+        if (count_posts%Constant.ARTICLE_COUNT_PER_PAGE == 0) {
+            return count_posts/Constant.ARTICLE_COUNT_PER_PAGE;
         } else {
-            return boardService.selectAll().size()/Constant.ARTICLE_COUNT_PER_PAGE + 1;
+            return count_posts/Constant.ARTICLE_COUNT_PER_PAGE + 1;
         }
     }
 }
