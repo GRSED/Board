@@ -2,9 +2,8 @@ package com.example.demo4;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class BoardController {
@@ -17,23 +16,22 @@ public class BoardController {
     }
 
     @RequestMapping(value = "list")
-    public String list(HttpServletRequest request, @RequestParam("no") int page_no) {
+    public String list(Model model, @RequestParam("no") int page_no) {
         Pagination pagination = new Pagination(page_no);
-        StartEndNo startEndNo = pagination.startEndNo();
 
-        request.setAttribute("no", page_no);
-        request.setAttribute("block_no", page_no/Constant.PAGE_COUNT_PER_BLOCK);
-        request.setAttribute(Constant.TOTAL_PAGES_NO, pagination.total_pages_no(boardService));
-        request.setAttribute("boardList", boardService.selectForPaging(startEndNo));
-        request.setAttribute("page_count_per_block", Constant.PAGE_COUNT_PER_BLOCK);
+        model.addAttribute("no", page_no);
+        model.addAttribute("block_no", pagination.block_no());
+        model.addAttribute(Constant.TOTAL_PAGES_NO, pagination.total_pages_no(boardService));
+        model.addAttribute("boardList", boardService.selectForPaging(pagination.startEndNo()));
+        model.addAttribute("page_count_per_block", Constant.PAGE_COUNT_PER_BLOCK);
 
         return "list";
     }
 
     @RequestMapping(value = "detail")
-    public String detail(HttpServletRequest request, @RequestParam("no") int board_no ) {
-        request.setAttribute("boardDetail", boardService.selectByNo(board_no));
-        request.setAttribute("page_no", Integer.parseInt(request.getParameter("page_no")));
+    public String detail(Model model, @RequestParam("no") int board_no, @RequestParam("page_no") int page_no ) {
+        model.addAttribute("boardDetail", boardService.selectByNo(board_no));
+        model.addAttribute("page_no", page_no);
         return "detail";
     }
 
@@ -54,9 +52,9 @@ public class BoardController {
     }
 
     @RequestMapping(value = "edit_form")
-    public String edit_form(@RequestParam("no") int board_no, HttpServletRequest request) {
-        request.setAttribute("boardDetail", boardService.selectByNo(board_no));
-        request.setAttribute("page_no", Integer.parseInt(request.getParameter("page_no")));
+    public String edit_form(@RequestParam("no") int board_no, @RequestParam("page_no") int page_no,  Model model) {
+        model.addAttribute("boardDetail", boardService.selectByNo(board_no));
+        model.addAttribute("page_no", page_no);
         return "edit_form";
     }
 
