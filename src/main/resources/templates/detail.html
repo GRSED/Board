@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail</title>
+</head>
+<body>
+<div id="menu" th:include="menu"></div>
+<ui>
+    <li th:text="${boardDetail.board_no}"></li>
+    <li th:text="${#dates.format(boardDetail.board_date,'yyyy-MM-dd')}"></li>
+    <li th:text="${boardDetail.board_title}"></li>
+    <li th:text="${boardDetail.board_content}"></li>
+</ui>
+<!--th:onclick="'window.location.href=\'/update?server=' + ${key} + '\''"-->
+<!-- ${boardDetail.board_no} -->
+<input type="button" th:onclick="'location.href=\'edit_form?no='+${boardDetail.board_no}+'&page_no='+${page_no}+'\''" value="수정">
+<form action="delete" method="post">
+    <input type="hidden" name="no" th:value="${boardDetail.board_no}">
+    <input type="submit" value="삭제">
+</form>
+<input type="button" th:onclick="'location.href=\'list?no='+${page_no}+'\''" value="뒤로">
+</body>
+</html>

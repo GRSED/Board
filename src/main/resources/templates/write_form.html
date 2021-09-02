@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WriteForm</title>
+</head>
+<body>
+    <div id="menu" th:include="menu"></div>
+    <form name="write" action="write" method="post" onsubmit="return check_null()">
+        <input type="hidden" name="board_no" value="0">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">제목</label>
+            <input name="board_title" type="text" class="form-control form-control-lg" id="exampleFormControlInput1">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">내용</label>
+            <textarea name="board_content" class="form-control form-control-lg" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div>
+            <button type="submit">작성</button>
+            <button type="button" onclick="location.href='list'">취소</button>
+        </div>
+    </form>
+<script>
+    function check_null() {
+        if (write.board_title.value.trim() == "") {
+            alert("제목을 입력해주세요.");
+            write.board_title.focus();
+            return false;
+        } else if (write.board_content.value.trim() == "") {
+            alert("내용을 입력해주세요.");
+            write.board_content.focus();
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>EditForm</title>
+</head>
+<body>
+    <div id="menu" th:include="menu"></div>
+    <form name="edit" th:action="@{edit(page_no=${page_no})}" method="post" onsubmit="return check_null()">
+        <input type="hidden" name="board_no" th:value="${boardDetail.board_no}">
+        <label>제목</label>
+        <input name="board_title" type="text" th:value="${boardDetail.board_title}">
+        <label>내용</label>
+        <input name="board_content" type="text" th:value="${boardDetail.board_content}">
+        <div>
+            <button type="submit">수정</button>
+            <!-- th:onclick="'location.href=\'edit_form?no='+${boardDetail.board_no}+'\''" -->
+            <!-- th:onclick="'location.href=\'edit_form?no='+${boardDetail.board_no}+'&page_no='+${page_no}+'\''" -->
+            <button type="button" th:onclick="'location.href=\'detail?no='+${boardDetail.board_no}+'&page_no='+${page_no}+'\''">취소</button>
+        </div>
+    </form>
+<script>
+    function check_null() {
+        if (edit.board_title.value.trim() == "") {
+            alert("제목을 입력해주세요.");
+            edit.board_title.focus();
+            return false;
+        } else if (edit.board_content.value.trim() == "") {
+            alert("내용을 입력해주세요.");
+            edit.board_content.focus();
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+</body>
+</html>

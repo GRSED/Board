@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+    <div id="menu" th:include="menu"></div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boardList}">
+            <td th:text="${board.board_no}"></td>
+            <td><a th:text="${board.board_title}" th:href="@{detail(no=${board.board_no},page_no=${no})}"></a></td>
+            <td th:text="${#dates.format(board.board_date,'yyyy-MM-dd')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li th:if="${no} > ${page_count_per_block} - 1" class="page-item"><a class="page-link" th:href="@{list(no=${no} - ${no}%${page_count_per_block} - 1)}">이전페이지</a></li>
+            <li th:unless="${no} > ${page_count_per_block} - 1" class="page-item disabled"><a class="page-link" th:href="@{list(no=${no} - ${no}%${page_count_per_block} - 1)}">이전페이지</a></li>
+            <li th:each="num : ${#numbers.sequence(0, page_count_per_block - 1)}" class="page-item" th:if="(${block_no} * ${page_count_per_block}) + 1 + ${num} <= ${total_pages_no}"><a class="page-link" th:text="(${block_no} * ${page_count_per_block}) + 1 + ${num}" th:href="@{list(no=(${block_no} * ${page_count_per_block}) + ${num})}"></a></li>
+            <li th:each="num : ${#numbers.sequence(0, page_count_per_block - 1)}" class="page-item disabled" th:unless="(${block_no} * ${page_count_per_block}) + 1 + ${num} <= ${total_pages_no}"><a class="page-link" th:text="(${block_no} * ${page_count_per_block}) + 1 + ${num}" th:href="@{list(no=(${block_no} * ${page_count_per_block}) + ${num})}"></a></li>
+            <li th:if="${no} < ${total_pages_no} - (((${total_pages_no} - 1)%${page_count_per_block}) + 1)" class="page-item"><a class="page-link" th:href="@{list(no=${no} + ${page_count_per_block} - ${no}%${page_count_per_block})}">다음페이지</a></li>
+            <li th:unless="${no} < ${total_pages_no} - (((${total_pages_no} - 1)%${page_count_per_block}) + 1)" class="page-item disabled"><a class="page-link" th:href="@{list(no=${no} + ${page_count_per_block} - ${no}%${page_count_per_block})}">다음페이지</a></li>
+        </ul>
+    </nav>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+</body>
+</html>
