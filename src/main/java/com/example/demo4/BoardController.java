@@ -13,34 +13,20 @@ public class BoardController {
 
     @RequestMapping(value = "main")
     public String main() {
-        return "main";
+        return "redirect:list?no=0";
     }
 
     @RequestMapping(value = "list")
-    public String list(HttpServletRequest request) {
-        StartEndNo startEndNo;
-        if (request.getParameter("no") == null) {
-            startEndNo = new StartEndNo(1, Constant.ARTICLE_COUNT_PER_PAGE);
-            //startEndNo.put(Constant.START_NO, 1);
-            //startEndNo.put(Constant.END_NO, Constant.ARTICLE_COUNT_PER_PAGE);
-            request.setAttribute("no", 0);
-            request.setAttribute("block_no", 0);
-        } else {
-            startEndNo = new StartEndNo((Integer.parseInt(request.getParameter("no"))) * Constant.ARTICLE_COUNT_PER_PAGE + 1, (Integer.parseInt(request.getParameter("no")) + 1) * Constant.ARTICLE_COUNT_PER_PAGE);
-            //startEndNo.put(Constant.START_NO, (Integer.parseInt(request.getParameter("no"))) * Constant.ARTICLE_COUNT_PER_PAGE + 1);
-            //startEndNo.put(Constant.END_NO, (Integer.parseInt(request.getParameter("no")) + 1) * Constant.ARTICLE_COUNT_PER_PAGE);
-            request.setAttribute("no", request.getParameter("no"));
-            request.setAttribute("block_no", Integer.parseInt(request.getParameter("no"))/Constant.PAGE_COUNT_PER_BLOCK);
-        }
+    public String list(HttpServletRequest request, @RequestParam("no") int page_no) {
+        Pagination pagination = new Pagination(page_no);
+        StartEndNo startEndNo = pagination.startEndNo();
 
-        if (boardService.selectAll().size()%Constant.ARTICLE_COUNT_PER_PAGE == 0) {
-            request.setAttribute(Constant.TOTAL_PAGES_NO, boardService.selectAll().size()/Constant.ARTICLE_COUNT_PER_PAGE);
-        } else {
-            request.setAttribute(Constant.TOTAL_PAGES_NO, boardService.selectAll().size()/Constant.ARTICLE_COUNT_PER_PAGE + 1);
-        }
-
+        request.setAttribute("no", page_no);
+        request.setAttribute("block_no", page_no/Constant.PAGE_COUNT_PER_BLOCK);
+        request.setAttribute(Constant.TOTAL_PAGES_NO, pagination.total_pages_no(boardService));
         request.setAttribute("boardList", boardService.selectForPaging(startEndNo));
         request.setAttribute("page_count_per_block", Constant.PAGE_COUNT_PER_BLOCK);
+
         return "list";
     }
 
@@ -58,13 +44,13 @@ public class BoardController {
 
     @GetMapping(value = "write")
     public String write_get() {
-        return "redirect:list";
+        return "redirect:list?no=0";
     }
 
     @PostMapping(value = "write")
     public String write_post(@ModelAttribute BoardDto boardDto) {
         boardService.insertBoard(boardDto);
-        return "redirect:list";
+        return "redirect:list?no=0";
     }
 
     @RequestMapping(value = "edit_form")
@@ -76,7 +62,7 @@ public class BoardController {
 
     @GetMapping(value = "edit")
     public String edit_get() {
-        return "redirect:list";
+        return "redirect:list?no=0";
     }
 
     @PostMapping(value = "edit")
@@ -87,12 +73,12 @@ public class BoardController {
 
     @GetMapping(value = "delete")
     public String delete_get() {
-        return "redirect:list";
+        return "redirect:list?no=0";
     }
 
     @PostMapping(value = "delete")
     public String delete_post(@RequestParam("no") int board_no) {
         boardService.deleteBoard(board_no);
-        return "redirect:list";
+        return "redirect:list?no=0";
     }
 }
