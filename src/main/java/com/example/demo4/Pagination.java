@@ -1,16 +1,10 @@
 package com.example.demo4;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
+@Data
 public class Pagination {
-    private int current_page_no;
+    private final int current_page_no;
 
     public int block_no () {
         return current_page_no/Constant.PAGE_COUNT_PER_BLOCK;
