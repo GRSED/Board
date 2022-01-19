@@ -10,7 +10,6 @@ public class BoardService{
     @Autowired
     private BoardMapper boardMapper;
 
-
     public int insertBoard(BoardDto boardDto) {
         return boardMapper.insertBoard(boardDto);
     }
@@ -18,7 +17,6 @@ public class BoardService{
     public int deleteBoard(int board_no) {
         return boardMapper.deleteBoard(board_no);
     }
-
 
     public int updateBoard(BoardDto boardDto) {
         return boardMapper.updateBoard(boardDto);
